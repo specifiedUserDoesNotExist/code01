@@ -73,12 +73,6 @@ def plotImage(name, data, levels, wm, wl, sigmax, sigmay, texto, nome):
 
 def textPlot(wmmin, wlmin, wkmin, Mumin, hmin, c6min, levels1, levels2, levels3, NDOF, param):
 
-	#$\Omega_m$ = {wmmin:.3f} 
-	#$\Omega_l$ = {wlmin:.3f} 
-	#$\chi^2$ = {c6min:.3f}
-	#$\chi^2_m$ = {c6min:.3f}
-
-	
 	t01=r"""
 $\nu$ = {NDOF}
 $\Omega_k$ = {wkmin:.3f}""".format(NDOF=NDOF,  
@@ -104,6 +98,8 @@ $\chi^2/\nu$ = {chi_nu:.3f}
 		return t01+t04
 	elif param == "3" or param == "4":
 		return t01+t04
+	elif param == "5":
+		return t01+t02
 		
 #-------------------------------------------------------------------------------
 		
@@ -133,9 +129,7 @@ Parametros:
 	if not distutils.spawn.find_executable(compiler):
 		print("Compilador \'", compiler, "\' não encontrado!")
 		exit(1)
-		
-	
-	#fileFortran = ["main_mod.f95", "gamma.f95", "integral.f95", "derivada.f95", lista_arg[2]]
+			
 	if param == "5":
 		filesIn = [lista_arg[2], lista_arg[3]]
 	else:
@@ -150,21 +144,10 @@ Parametros:
 	
 	file_exe = "file.exe"
 	if not distutils.spawn.find_executable(file_exe):
-		#subprocess.run([compiler, "-o", file_exe, fileFortran[0], fileFortran[1], fileFortran[2]])#, stderr=subprocess.PIPE)
-		#subprocess.run(["chmod", "+x", file_exe])
 		if param == "5":
 			subprocess.run([compiler, "-o", file_exe]+fileFortran[:-2])
 		else:
 			subprocess.run([compiler, "-o", file_exe]+fileFortran[:-1])
-		#if tmp.returncode!=0:
-		#	print("Erro de compilação!")
-		#	exit(tmp.returncode)
-		#subprocess.Popen([compiler, "-o", file_exe, fileFortran[0], fileFortran[1], fileFortran[2]])
-
-	#param = {"-1":"1", "-2":"2", "-3":"3", "-4":"4", "-5":"5"}.get(lista_arg[1], "emp")
-	#if param == "emp":
-	#	print(txt)
-	#	return
 	
 	map_param = {"1":"hdl-", "2":"mag-", "3":"daWang-", "4":"riess-", "5":"cmbBAO-"}
 	
@@ -176,7 +159,6 @@ Parametros:
 	arquivoDeSaida = map_param.get(param)[:-1]+".dat"#+arquivoDeEntrada
 	arquivoSaidaPython = map_param.get(param)+"Python.dat"#+arquivoDeEntrada
 	
-	#run_proc = ["./"+file_exe, param, arquivoDeEntrada, arquivoDeSaida, arquivoSaidaPython]
 	run_proc = ["./"+file_exe, param] + arquivoDeEntrada + [arquivoDeSaida, arquivoSaidaPython]
 	subprocess.run(run_proc)
 	

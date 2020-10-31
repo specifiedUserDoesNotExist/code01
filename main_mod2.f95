@@ -218,7 +218,6 @@ program main
     character (len = 30) :: arquivoDeEntradaSN
     character (len = 30) :: arquivoDeEntradaRCB
     character (len = 30) :: arquivoDeSaida
-    !character (len = 30) :: bestArquivoDeSaida
     character (len = 30) :: arquivoSaidaPython
     character (len = 5) :: paramString
     
@@ -226,9 +225,7 @@ program main
     integer :: numeroArquivoDeEntradaSN = 2
     integer :: numeroArquivoDeEntradaRCB
     integer :: numeroArquivoDeSaida
-    !integer :: numeroBestArquivoDeSaida = 4
     integer :: numeroArquivoSaidaPython
-    
     
     call get_command_argument(numeroParametro, paramString)
     read (paramString, *) param
@@ -249,13 +246,11 @@ program main
 	end if
 	
     call get_command_argument(numeroArquivoDeSaida, arquivoDeSaida)
-    !call get_command_argument(numeroBestArquivoDeSaida, bestArquivoDeSaida)
     call get_command_argument(numeroArquivoSaidaPython, arquivoSaidaPython)
        
     open (unit=numeroArquivoDeEntradaSN, file=arquivoDeEntradaSN)
     open (unit=numeroArquivoDeSaida, file=arquivoDeSaida)
     open (unit=numeroArquivoSaidaPython, file=arquivoSaidaPython)
-    !open (unit=numeroBestArquivoDeSaida, file=bestArquivoDeSaida)
     
     !-----------  LER O ARQUIVO DE ENTRADA (A AMOSTRA OBSERVADA) ----------
     do i = 1, NP
@@ -283,10 +278,6 @@ program main
         A = A + Av(i)
     end do
     
-    !if (param == 5 ) then
-    !	call qromb1(func1, 0.d0, 1090.d0, xint)
-    !end if
-    
     do m = 0, INT
         do l = 0, INT
         
@@ -300,12 +291,10 @@ program main
                 write(numeroArquivoDeSaida,*) wm, wl, probP
                 
                 if ( chi2P < c6min ) then
-                	!print*, SNe, cmbbao
                     c6min = chi2P
                     wlmin = wl
                     wmmin = wm
                     Bmin = B
-                    !print*, wm, wl, c6min
                 end if
             else
                 write(numeroArquivoDeSaida,*) wm, wl, "NaN"
@@ -320,8 +309,6 @@ program main
     prob95 = prob(c6min, 95)  !95,4% - 2 sigma
     prob99 = prob(c6min, 99)  !99,7% - 3 sigma
     
-    !print*, NDOF, c6min, prob68, prob95, prob99
-
     call invMatrixFisher(wmmin, wlmin, c6min, error(1), error(2))
 
     write(*,*) param, " -> ", c6min, wmmin, wlmin, c6min

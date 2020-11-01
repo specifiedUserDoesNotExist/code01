@@ -335,9 +335,10 @@ program main
     write(numeroArquivoSaidaPython, *) "err2 ", error(2) 
     
     close(numeroArquivoSaidaPython)
-  	deallocate(Av, redz, miobs, sigma)
-  	if ( param == 5 ) then
-  		deallocate(z, Rcb, xsRcb)
-  	end if
+    
+    deallocate(Av, redz, miobs, sigma)
+    if ( param == 5 ) then
+        deallocate(z, Rcb, xsRcb)
+    end if
   
 end program main

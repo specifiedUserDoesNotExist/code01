@@ -248,7 +248,6 @@ program main
     
     !-----------  LER O ARQUIVO DE ENTRADA (A AMOSTRA OBSERVADA) ----------
     call readNumberLines(arquivoDeEntradaSN, NP)
-    print*, "NP -> ", NP
     
     open (unit=numeroArquivoDeEntradaSN, file=arquivoDeEntradaSN)
     allocate(redz(NP), miobs(NP), sigma(NP))
@@ -276,8 +275,6 @@ program main
     else
     	NDOF = NP + SP - d
     end if
-    
-    print *, "NDOF -> ", NDOF
     
     c6min = 10000.00 ! VARIAVEL QUE SERA TESTADA
     

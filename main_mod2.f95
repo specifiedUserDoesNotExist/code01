@@ -12,7 +12,7 @@ module global
     integer, parameter :: NP = 580
     integer, parameter :: SP = 6
     integer, parameter :: d = 2
-    integer, parameter :: NDOF = SP + NP  - d
+    integer :: NDOF = SP + NP  - d
     integer, parameter :: INT = 100
     integer :: param
     
@@ -180,8 +180,6 @@ subroutine invMatrixFisher(wmmin, wlmin, chi2, err1, err2)
     real (kind = 8) :: wmmin, wlmin, chi2fun, dx2, dxdy, dy2, errDx, errDy, errDxDy
     real (kind = 8) :: chi2, err1, err2, varAux!, derivada
     
-    !external derivada
-    
     call derivada(wmmin, wlmin, chi2, 1, dx2, errDx)
     call derivada(wmmin, wlmin, chi2, 2, dy2, errDy)
     call derivada(wmmin, wlmin, chi2, 3, dxdy, errDxDy)
@@ -190,13 +188,9 @@ subroutine invMatrixFisher(wmmin, wlmin, chi2, err1, err2)
     dy2 = dy2/2.d0
     dxdy = dxdy/2.d0
     
-    !print*, dx2, dy2, dxdy
-    
     varAux = 1.d0/(dx2*dy2-dxdy*dxdy)
     err1 = sqrt(dy2*varAux)
     err2 = sqrt(dx2*varAux)
-    
-    !print*, err1, err2
 
 end subroutine invMatrixFisher
 !-------------------------------------------------------------------------------
@@ -227,23 +221,21 @@ program main
     integer :: numeroArquivoDeSaida
     integer :: numeroArquivoSaidaPython
     
+    
     call get_command_argument(numeroParametro, paramString)
     read (paramString, *) param
+    
+    call get_command_argument(numeroArquivoDeEntradaSN, arquivoDeEntradaSN)
     
     if ( param == 5 ) then
     	numeroArquivoDeEntradaRCB = 3
     	numeroArquivoDeSaida = 4
     	numeroArquivoSaidaPython = 5
+    	call get_command_argument(numeroArquivoDeEntradaRCB, arquivoDeEntradaRCB)
     else
     	numeroArquivoDeSaida = 3
     	numeroArquivoSaidaPython = 4
     end if
-    
-    call get_command_argument(numeroArquivoDeEntradaSN, arquivoDeEntradaSN)
-    
-    if ( param == 5 ) then
-		call get_command_argument(numeroArquivoDeEntradaRCB, arquivoDeEntradaRCB)
-	end if
 	
     call get_command_argument(numeroArquivoDeSaida, arquivoDeSaida)
     call get_command_argument(numeroArquivoSaidaPython, arquivoSaidaPython)
@@ -269,6 +261,9 @@ program main
     
     close(numeroArquivoDeEntradaSN)
     !---------------------------------------------------------------------------
+    if ( param /= 5 ) then
+    	NDOF = NDOF - SP
+    end if
     
     c6min = 10000.00 ! VARIAVEL QUE SERA TESTADA
     
@@ -308,7 +303,7 @@ program main
     prob68 = prob(c6min, 68)  !68,3% - 1 sigma
     prob95 = prob(c6min, 95)  !95,4% - 2 sigma
     prob99 = prob(c6min, 99)  !99,7% - 3 sigma
-    
+
     call invMatrixFisher(wmmin, wlmin, c6min, error(1), error(2))
 
     write(*,*) param, " -> ", c6min, wmmin, wlmin, c6min

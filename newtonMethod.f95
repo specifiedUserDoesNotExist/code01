@@ -49,7 +49,6 @@ subroutine newtonsMethod(x0, k, x1)
 	integer :: i
 	
 	eps = 1e-7
-	!x0=0.0
 	
 	do i=1, interations
 		f0 = func(x0, k)
@@ -82,7 +81,6 @@ function func(x, k)
 	N = 60.0
 	l = 1.5
 	
-	!func = x**2 - 5*x + 6  
 	func = 2.0*l*N - x*sqrt(1.0 + (l*k*x)**2.) - x
 	
 end function

@@ -56,6 +56,7 @@ subroutine newtonsMethod(x0, k, x1)
 		call derivada(x0, k, f1, erro)
 		
 		if (abs(f1) < eps) then
+			print*, "nao converge"
 			return
 		end if
 		
@@ -68,10 +69,6 @@ subroutine newtonsMethod(x0, k, x1)
 		x0 = x1
 	
 	end do
-		
-	print*, 'Not converged'
-	x1=0.0
-	return
 
 end subroutine
 

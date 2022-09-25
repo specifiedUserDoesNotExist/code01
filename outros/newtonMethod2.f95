@@ -108,7 +108,7 @@ function ns(f)
 	d1 = 1+lkf**2
 	
 	n2 = 2*k
-	d2 = ((1+lkf**2)**3)*(sqrt(1+lkf**2)-lkf)
+	d2 = (d1**3)*(sqrt(d1)-lkf)
 
 	ns = 1 - l**2*(n1/d1 - n2/d2)
 

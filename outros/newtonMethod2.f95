@@ -120,15 +120,15 @@ program main
 	use global
 	implicit none
 	
-	real (kind = 8) :: ns, x = 0
-	real (kind = 8) f, erro
+	real (kind = 8) :: ns, f
+	real (kind = 8) :: x = 0
 	integer :: INT = 1000
 	integer :: ki
 	
 	N = 60.0
 	l = 1.5
 	
-	do ki =1, INT
+	do ki = 1, INT
 		k = ki/(1.d0*INT)
 		
 		call newtonsMethod(x, f)

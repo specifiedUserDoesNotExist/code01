@@ -90,7 +90,6 @@ function func(x)
 	
 	real (kind = 8) :: x, func
 	
-	!func = x**2 - 5*x + 6  
 	func = 2.0*l*N - x*sqrt(1.0 + (l*k*x)**2.) - x
 	
 end function
